@@ -1,0 +1,277 @@
+/* anatomy.css — Phase 1 UI. Uses the host site's existing CSS variables
+   (--accent-color, --glass-bg, --glass-border, --border-radius-xl,
+   --text-secondary) so it inherits every theme (dark/light/etc.) for free. */
+
+#anatomy-section {
+  padding: 0;
+}
+
+.anatomy-root {
+  position: relative;
+  width: 100%;
+  height: min(78vh, 720px);
+  min-height: 420px;
+  border-radius: var(--border-radius-xl, 16px);
+  overflow: hidden;
+  background: #0e1620;
+  display: flex;
+  flex-direction: column;
+}
+
+.anatomy-topbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 10px 14px;
+  background: var(--glass-bg, rgba(20,26,36,0.6));
+  border-bottom: 1px solid var(--glass-border, rgba(255,255,255,0.08));
+  z-index: 3;
+}
+
+.anatomy-search {
+  flex: 1 1 200px;
+  min-width: 140px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--glass-border, rgba(255,255,255,0.15));
+  background: rgba(255,255,255,0.06);
+  color: #fff;
+  font-size: 0.9rem;
+}
+
+.anatomy-body {
+  position: relative;
+  flex: 1;
+  display: flex;
+  min-height: 0;
+}
+
+.anatomy-viewport {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+.anatomy-viewport canvas { display: block; touch-action: none; }
+
+.anatomy-notice {
+  position: absolute;
+  top: 10px;
+  inset-inline-start: 50%;
+  transform: translateX(-50%);
+  background: rgba(15,107,158,0.92);
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  z-index: 4;
+  white-space: nowrap;
+  max-width: 92%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.anatomy-loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 0.95rem;
+  background: rgba(14,22,32,0.6);
+  z-index: 5;
+  flex-direction: column;
+  gap: 10px;
+}
+.anatomy-spinner {
+  width: 34px; height: 34px;
+  border: 3px solid rgba(255,255,255,0.25);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: anatomySpin 0.8s linear infinite;
+}
+@keyframes anatomySpin { to { transform: rotate(360deg); } }
+
+.anatomy-fps {
+  position: absolute;
+  bottom: 8px;
+  inset-inline-end: 8px;
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.55);
+  z-index: 4;
+}
+
+/* Floating view controls (front/back/left/right/reset) */
+.anatomy-viewctrl {
+  position: absolute;
+  bottom: 10px;
+  inset-inline-start: 10px;
+  display: flex;
+  gap: 6px;
+  z-index: 4;
+  flex-wrap: wrap;
+  max-width: calc(100% - 20px);
+}
+.anatomy-viewctrl button {
+  background: rgba(255,255,255,0.12);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+.anatomy-viewctrl button:hover { background: rgba(255,255,255,0.22); }
+
+/* Layer toggles */
+.anatomy-layers {
+  position: absolute;
+  top: 54px;
+  inset-inline-start: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  z-index: 4;
+  background: rgba(14,22,32,0.65);
+  padding: 8px;
+  border-radius: 10px;
+}
+.anatomy-layer-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: none;
+  color: rgba(255,255,255,0.75);
+  font-size: 0.75rem;
+  cursor: pointer;
+  padding: 3px 4px;
+  border-radius: 6px;
+  text-align: start;
+}
+.anatomy-layer-btn.active { color: #fff; background: rgba(59,130,246,0.25); }
+
+/* Desktop side info panel / mobile bottom sheet */
+.anatomy-info-panel {
+  width: 300px;
+  flex: 0 0 auto;
+  background: var(--glass-bg, rgba(20,26,36,0.75));
+  border-inline-start: 1px solid var(--glass-border, rgba(255,255,255,0.08));
+  padding: 14px;
+  overflow-y: auto;
+  color: #fff;
+}
+.anatomy-info-empty { color: rgba(255,255,255,0.55); font-size: 0.85rem; }
+.anatomy-info-name { font-size: 1.1rem; font-weight: 800; }
+.anatomy-info-latin { font-size: 0.8rem; color: rgba(255,255,255,0.55); font-style: italic; margin-bottom: 8px; }
+.anatomy-info-row { font-size: 0.85rem; margin-top: 8px; line-height: 1.5; }
+
+.anatomy-disclaimer {
+  padding: 8px 14px;
+  font-size: 0.72rem;
+  color: var(--text-secondary, #94a3b8);
+  background: var(--glass-bg, rgba(20,26,36,0.5));
+  border-top: 1px solid var(--glass-border, rgba(255,255,255,0.08));
+  text-align: center;
+}
+
+.anatomy-webgl-fallback {
+  padding: 40px 20px;
+  text-align: center;
+  color: var(--text-secondary, #94a3b8);
+}
+
+@media (max-width: 820px) {
+  .anatomy-body { flex-direction: column; }
+  .anatomy-info-panel {
+    width: 100%;
+    max-height: 40%;
+    border-inline-start: none;
+    border-top: 1px solid var(--glass-border, rgba(255,255,255,0.08));
+  }
+  .anatomy-root { height: min(88vh, 760px); }
+}
+
+/* ── Injection Master (Phase 2) ─────────────────────────────────── */
+.anatomy-mode-switch { display: flex; gap: 6px; }
+.anatomy-mode-btn {
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.75);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 0.78rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.anatomy-mode-btn.active { background: rgba(59,130,246,0.35); color: #fff; border-color: rgba(59,130,246,0.6); }
+
+.anatomy-injection-panel {
+  width: 300px;
+  flex: 0 0 auto;
+  background: var(--glass-bg, rgba(20,26,36,0.75));
+  border-inline-start: 1px solid var(--glass-border, rgba(255,255,255,0.08));
+  padding: 14px;
+  overflow-y: auto;
+  color: #fff;
+}
+.anatomy-inj-categories { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.anatomy-inj-cat-btn, .anatomy-inj-site-btn {
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.8);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 8px;
+  padding: 5px 10px;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+.anatomy-inj-cat-btn.active, .anatomy-inj-site-btn.active { background: rgba(59,130,246,0.35); border-color: rgba(59,130,246,0.6); }
+.anatomy-inj-sitelist { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+.anatomy-inj-sitename { font-size: 1rem; font-weight: 800; margin-bottom: 4px; }
+.anatomy-inj-landmark { font-size: 0.8rem; color: rgba(255,255,255,0.7); margin-bottom: 10px; line-height: 1.4; }
+.anatomy-inj-label { display: block; font-size: 0.78rem; color: rgba(255,255,255,0.65); margin: 8px 0 4px; }
+.anatomy-inj-angle-slider { width: 100%; }
+.anatomy-inj-depth-btns { display: flex; gap: 6px; flex-wrap: wrap; }
+.anatomy-inj-depth-btns button {
+  flex: 1 1 auto;
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.8);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 8px;
+  padding: 6px 4px;
+  font-size: 0.7rem;
+  cursor: pointer;
+}
+.anatomy-inj-depth-btns button.active { background: rgba(34,197,94,0.3); border-color: rgba(34,197,94,0.6); }
+.anatomy-inj-insert-btn {
+  width: 100%;
+  margin-top: 12px;
+  background: linear-gradient(135deg,#3b82f6,#2563eb);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.anatomy-inj-feedback { margin-top: 14px; font-size: 0.82rem; }
+.anatomy-inj-score { font-size: 1.1rem; font-weight: 800; margin-bottom: 8px; }
+.anatomy-inj-row { padding: 4px 0; }
+.anatomy-inj-row.ok { color: #4ade80; }
+.anatomy-inj-row.bad { color: #f87171; }
+.anatomy-inj-danger {
+  margin-top: 8px; padding: 8px; border-radius: 8px;
+  background: rgba(239,68,68,0.15); color: #fca5a5; font-size: 0.78rem;
+}
+.anatomy-inj-errors { margin-top: 8px; font-size: 0.78rem; color: rgba(255,255,255,0.75); }
+.anatomy-inj-studymore-btn {
+  width: 100%; margin-top: 10px;
+  background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 8px; padding: 8px; font-size: 0.78rem; cursor: pointer;
+}
+
+@media (max-width: 820px) {
+  .anatomy-injection-panel { width: 100%; max-height: 46%; border-inline-start: none; border-top: 1px solid var(--glass-border, rgba(255,255,255,0.08)); }
+}
